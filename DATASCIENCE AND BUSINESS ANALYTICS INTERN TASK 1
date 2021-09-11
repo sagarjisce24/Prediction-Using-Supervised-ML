@@ -1,0 +1,93 @@
+DATASCIENCE AND BUSINESS ANALYTICS INTERNSHIP
+#TASK1 : PREDICTION USING SUPERVISED ML
+
+PROBLEM STATEMENT : Predict the percentage of an student based on the no. of study hours.What will be predicted score if a student studies for 9.25 hrs/ day?
+
+STEP 1: IMPORT DATASET
+
+#IMPORTING LIBRARIES
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+#IMPORTING DATASET
+dataset=pd.read_csv("http://bit.ly/w-data")
+
+dataset.head()
+
+STEP 2: VISUALIZE THE DATASET
+# PLOTTING THE DATASET WITH HOURS ON X-AXIS AND SCORES ON Y-AXIS
+
+
+dataset.plot(x="Hours",y="Scores",style="o")
+plt.title("Hours Vs Scores")
+plt.xlabel("Hours")
+plt.ylabel("scores")
+plt.grid()
+
+
+STEP 3 : TRAINING THE DATA USING LINEAR REGRESSION
+
+
+#DIVIDING THE DATA INTO ATTRIBUTES(INPUTS) AND LABELS(OUTPUTS)
+x=dataset.iloc[: , :-1].values
+y=dataset.iloc[:,1].values
+#DIVIDE THE DATA INTO TRAINING AND TESTING DATA
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+ 
+#TRAIN THE DATA USING LINEARREGRESSION
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(x_train, y_train)
+
+
+
+STEP 4 : VISUALIZING THE MODEL
+
+
+#PLOTTING THE REGRESSION LINE
+line = model.coef_*x+model.intercept_
+​
+#PLOTTING THE TRAINING DATA
+plt.scatter(x_train, y_train)
+plt.plot(x, line, color='green')
+plt.title("Hours vs Scores")
+plt.xlabel("Hours")
+plt.ylabel("Scores")
+plt.grid()
+
+
+#PLOTTING THE TESTING DATA
+plt.scatter(x_test,y_test)
+plt.plot(x, line, color='violet')
+plt.title("Hours vs Score")
+plt.xlabel("Hours")
+plt.ylabel("Scores")
+plt.grid()
+
+
+STEP 5 : MAKING PREDICTIONS
+
+#PREDICTING SCORES
+y_predict=model.predict(x_test) 
+#COMPARING THE ACTUAL VALUES TO PREDICTED VALUES
+​
+df = pd.DataFrame({'Actual': y_test,'predicted': y_predict})
+df
+
+
+STEP 6: TESTING THE MODEL WITH GIVEN DATA 9.25hrs
+
+hrs=9.25
+pred=model.predict([[hrs]])
+hrs,pred[0]
+
+STEP 7 : EVALUATING THE MODEL
+
+from sklearn import metrics
+metrics.mean_absolute_error(y_test,y_predict)
+
+
+
